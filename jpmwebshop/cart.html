@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="app-page" content="cart" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cart | Marquezcents Co.</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+
+  <header>
+    <div class="brand">
+      <img src="images/logo3.png" alt="Logo" />
+      <div>
+        <h1>{{ companyName }}</h1>
+        <p>{{ tagline }}</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <div class="pill">Total: <strong>{{ fmtMoney(cartTotal) }}</strong></div>
+    </div>
+  </header>
+
+  <div class="container">
+    <nav>
+      <ul>
+        <li v-for="link in navLinks" :key="link.text">
+          <a v-if="!link.action" class="nav-link" :href="link.href" :class="{ active: link.page === page }">
+            <span>{{ link.text }}</span>
+            <span v-if="link.badge !== undefined" class="badge">{{ link.badge }}</span>
+          </a>
+          <button v-else class="nav-link" type="button" @click="handleNav(link)">
+            <span>{{ link.text }}</span>
+          </button>
+        </li>
+      </ul>
+    </nav>
+
+    <main>
+      <h2>Cart</h2>
+      <div class="alert ok" v-if="notice">{{ notice }}</div>
+      <div class="alert err" v-if="error">{{ error }}</div>
+
+      <div v-if="!cart.length" class="card">
+        <p>Your cart is empty.</p>
+        <div class="btn-row">
+          <a class="btn" href="products.html">Shop Products</a>
+        </div>
+      </div>
+
+      <div v-else>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Price</th>
+              <th style="width:120px;">Qty</th>
+              <th class="right">Line Total</th>
+              <th style="width:120px;"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in cart" :key="item.productId">
+              <td>
+                <div style="display:flex; gap:10px; align-items:center;">
+                  <img :src="item.img" :alt="item.name"
+                       style="width:60px;height:60px;object-fit:cover;border-radius:12px;border:1px solid rgba(255,255,255,0.14);">
+                  <div>
+                    <div style="font-weight:650;">{{ item.name }}</div>
+                    <div class="muted" style="font-size:0.88rem;">ID: {{ item.productId }}</div>
+                  </div>
+                </div>
+              </td>
+              <td>{{ fmtMoney(item.price) }}</td>
+              <td>
+                <input type="number" min="1" :value="item.qty"
+                       @input="updateQty(item.productId, $event.target.value)" />
+              </td>
+              <td class="right">{{ fmtMoney(item.price * item.qty) }}</td>
+              <td class="right">
+                <button class="btn secondary" @click="removeFromCart(item.productId)">Remove</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="card" style="margin-top:14px;">
+          <h2>Checkout</h2>
+          <p class="muted">Enter delivery details then place the order.</p>
+
+          <label>Full Name</label>
+          <input type="text" v-model="checkoutForm.fullName" placeholder="Juan Dela Cruz" />
+
+          <label>Email</label>
+          <input type="email" v-model="checkoutForm.email" placeholder="you@email.com" />
+
+          <label>Address</label>
+          <textarea rows="3" v-model="checkoutForm.address" placeholder="Complete address..."></textarea>
+
+          <label>Payment Method</label>
+          <select v-model="checkoutForm.paymentMethod">
+            <option value="COD">Cash on Delivery</option>
+            <option value="GCash">GCash</option>
+            <option value="Card">Card</option>
+          </select>
+
+          <hr class="sep" />
+
+          <p>Subtotal: <strong>{{ fmtMoney(cartSubtotal) }}</strong></p>
+          <p>Shipping: <strong>{{ fmtMoney(cartShipping) }}</strong></p>
+          <p>Total: <strong>{{ fmtMoney(cartTotal) }}</strong></p>
+
+          <div class="btn-row">
+            <button class="btn" @click="checkout">Place Order</button>
+            <button class="btn secondary" @click="clearCart">Clear Cart</button>
+          </div>
+
+          <p class="muted" style="margin-top:10px;" v-if="!isLoggedIn">
+            You’ll be redirected to Login when placing the order.
+          </p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <footer><p>&copy; {{ year }} | {{ companyName }}</p></footer>
+
+</div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

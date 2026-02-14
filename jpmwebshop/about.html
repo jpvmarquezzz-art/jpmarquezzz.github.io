@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Marquezcents Co. | About</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="about-page">
+<div id="app">
+
+    <header>
+        <h1>
+            <img src="images/logo3.png" alt="Logo">
+            {{ companyName }}
+        </h1>
+        <p>{{ tagline }}</p>
+    </header>
+
+    <div class="container">
+        <nav>
+            <ul>
+                <li v-for="link in navLinks" :key="link.href">
+                    <a :href="link.href">{{ link.text }}</a>
+                </li>
+            </ul>
+        </nav>
+
+        <main>
+            <h2>About the Company</h2>
+            <p>
+                Marquezcents Co. is a men's fragrance reseller focused on providing
+                premium quality scents that represent elegance and style.
+            </p>
+
+            <h2>About the Owner</h2>
+            <p>
+                I am a 20 year old IT student who enjoys exploring technology, design, and entrepreneurship.
+                Creating this website definitely allowed me to apply what I have learned in HTML while also expressing my personal interest in men’s fragrances.
+            </p>
+        </main>
+    </div>
+
+    <footer>
+        <p>&copy; {{ year }} | {{ companyName }}</p>
+        <p>Email: {{ supportEmail }}</p>
+    </footer>
+
+</div>
+
+<!-- Vue 3 CDN -->
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

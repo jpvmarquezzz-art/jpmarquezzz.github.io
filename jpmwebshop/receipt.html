@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="app-page" content="receipt" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Receipt | Marquezcents Co.</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+
+  <header>
+    <div class="brand">
+      <img src="images/logo3.png" alt="Logo" />
+      <div>
+        <h1>{{ companyName }}</h1>
+        <p>{{ tagline }}</p>
+      </div>
+    </div>
+    <div class="header-actions"><div class="pill">Receipt</div></div>
+  </header>
+
+  <div class="container">
+    <nav>
+      <ul>
+        <li v-for="link in navLinks" :key="link.text">
+          <a v-if="!link.action" class="nav-link" :href="link.href" :class="{ active: link.page === page }">
+            <span>{{ link.text }}</span>
+            <span v-if="link.badge !== undefined" class="badge">{{ link.badge }}</span>
+          </a>
+          <button v-else class="nav-link" type="button" @click="handleNav(link)">
+            <span>{{ link.text }}</span>
+          </button>
+        </li>
+      </ul>
+    </nav>
+
+    <main>
+      <h2>Receipt</h2>
+
+      <div class="card" v-if="!receiptOrder">
+        <p>Receipt not found.</p>
+        <div class="btn-row">
+          <a class="btn" href="transaction.html">Back to Transactions</a>
+          <a class="btn secondary" href="products.html">Shop</a>
+        </div>
+      </div>
+
+      <div class="card" v-else>
+        <p class="muted">Order ID: <strong>{{ receiptOrder.id }}</strong></p>
+        <p class="muted">Date: {{ receiptOrder.createdAt }}</p>
+        <p class="muted">Status: {{ receiptOrder.status }} | Payment: {{ receiptOrder.paymentMethod }}</p>
+
+        <hr class="sep" />
+
+        <h2>Customer</h2>
+        <p><strong>{{ receiptOrder.customer.fullName }}</strong></p>
+        <p class="muted">{{ receiptOrder.customer.email }}</p>
+        <p class="muted">{{ receiptOrder.customer.address }}</p>
+
+        <hr class="sep" />
+
+        <h2>Items</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Price</th>
+              <th>Qty</th>
+              <th class="right">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="it in receiptOrder.items" :key="it.productId">
+              <td>{{ it.name }}</td>
+              <td>{{ fmtMoney(it.price) }}</td>
+              <td>{{ it.qty }}</td>
+              <td class="right">{{ fmtMoney(it.lineTotal) }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <hr class="sep" />
+
+        <p class="right">Subtotal: <strong>{{ fmtMoney(receiptOrder.subtotal) }}</strong></p>
+        <p class="right">Shipping: <strong>{{ fmtMoney(receiptOrder.shippingFee) }}</strong></p>
+        <p class="right">Total: <strong class="price">{{ fmtMoney(receiptOrder.total) }}</strong></p>
+
+        <div class="btn-row">
+          <a class="btn" href="products.html">Continue Shopping</a>
+          <a class="btn secondary" href="transaction.html">Back</a>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <footer><p>&copy; {{ year }} | {{ companyName }}</p></footer>
+
+</div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

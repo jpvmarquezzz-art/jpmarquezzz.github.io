@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Marquezcents Co. | Contact</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+
+    <header>
+        <h1>
+            <img src="images/logo3.png" alt="Logo">
+            {{ companyName }}
+        </h1>
+        <p>{{ tagline }}</p>
+    </header>
+
+    <div class="container">
+        <nav>
+            <ul>
+                <li v-for="link in navLinks" :key="link.href">
+                    <a :href="link.href">{{ link.text }}</a>
+                </li>
+            </ul>
+        </nav>
+
+        <main>
+            <h2>Contact Us</h2>
+
+            <form @submit.prevent="submitForm">
+                <input
+                    type="text"
+                    placeholder="Your Name"
+                    required
+                    v-model="contact.name"
+                >
+
+                <textarea
+                    placeholder="Your Message"
+                    rows="5"
+                    required
+                    v-model="contact.message"
+                ></textarea>
+
+                <button type="submit">Send Message</button>
+            </form>
+        </main>
+    </div>
+
+    <footer>
+        <p>&copy; {{ year }} | {{ companyName }}</p>
+        <p>Email: {{ supportEmail }}</p>
+    </footer>
+
+</div>
+
+<!-- Vue 3 CDN -->
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="app-page" content="transaction" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Transactions | Marquezcents Co.</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+
+  <header>
+    <div class="brand">
+      <img src="images/logo3.png" alt="Logo" />
+      <div>
+        <h1>{{ companyName }}</h1>
+        <p>{{ tagline }}</p>
+      </div>
+    </div>
+    <div class="header-actions"><div class="pill">Order History</div></div>
+  </header>
+
+  <div class="container">
+    <nav>
+      <ul>
+        <li v-for="link in navLinks" :key="link.text">
+          <a v-if="!link.action" class="nav-link" :href="link.href" :class="{ active: link.page === page }">
+            <span>{{ link.text }}</span>
+            <span v-if="link.badge !== undefined" class="badge">{{ link.badge }}</span>
+          </a>
+          <button v-else class="nav-link" type="button" @click="handleNav(link)">
+            <span>{{ link.text }}</span>
+          </button>
+        </li>
+      </ul>
+    </nav>
+
+    <main>
+      <h2>Transactions</h2>
+
+      <div class="card" v-if="!transactionsForUser.length">
+        <p>You don’t have any orders yet.</p>
+        <div class="btn-row">
+          <a class="btn" href="products.html">Shop Now</a>
+        </div>
+      </div>
+
+      <div class="card" v-else>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th class="right">Total</th>
+              <th class="right"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="o in transactionsForUser" :key="o.id">
+              <td>{{ o.id }}</td>
+              <td>{{ o.createdAt }}</td>
+              <td>{{ o.status }}</td>
+              <td class="right">{{ fmtMoney(o.total) }}</td>
+              <td class="right">
+                <button class="btn secondary" @click="goToReceipt(o.id)">View Receipt</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </main>
+  </div>
+
+  <footer><p>&copy; {{ year }} | {{ companyName }}</p></footer>
+
+</div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

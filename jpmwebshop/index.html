@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="app-page" content="home" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home | Marquezcents Co.</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+
+  <header>
+    <div class="brand">
+      <img src="images/logo3.png" alt="Logo" />
+      <div>
+        <h1>{{ companyName }}</h1>
+        <p>{{ tagline }}</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <div class="pill" v-if="isLoggedIn">Signed in as <strong>{{ currentUser?.name }}</strong></div>
+      <div class="pill">Support: {{ supportEmail }}</div>
+    </div>
+  </header>
+
+  <div class="container">
+    <nav>
+      <ul>
+        <li v-for="link in navLinks" :key="link.text">
+          <!-- NORMAL LINKS: real href navigation -->
+          <a
+            v-if="!link.action"
+            class="nav-link"
+            :href="link.href"
+            :class="{ active: link.page === page }"
+          >
+            <span>{{ link.text }}</span>
+            <span v-if="link.badge !== undefined" class="badge">{{ link.badge }}</span>
+          </a>
+
+          <!-- ACTION LINK: logout -->
+          <button
+            v-else
+            class="nav-link"
+            type="button"
+            @click="handleNav(link)"
+          >
+            <span>{{ link.text }}</span>
+          </button>
+        </li>
+      </ul>
+    </nav>
+
+    <main>
+      <h2>Welcome</h2>
+      <p class="muted">
+        Discover premium men’s fragrances curated for elegance, confidence, and everyday wear.
+      </p>
+
+      <hr class="sep" />
+
+      <div class="card">
+        <h2>Featured Products</h2>
+        <p class="muted">Shop the best picks. Visit Products to browse all items.</p>
+
+        <div class="grid" style="margin-top:12px;">
+          <div class="card" v-for="p in products" :key="p.id">
+            <img class="product-img" :src="p.img" :alt="p.name" />
+            <div class="product-title">{{ p.name }}</div>
+            <div class="price">{{ fmtMoney(p.price) }}</div>
+            <div class="btn-row">
+              <button class="btn" @click="addToCart(p)">Add to Cart</button>
+              <a class="btn secondary" href="products.html">View Products</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <footer>
+    <p>&copy; {{ year }} | {{ companyName }}</p>
+  </footer>
+
+</div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

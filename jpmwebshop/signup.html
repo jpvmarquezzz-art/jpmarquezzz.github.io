@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="app-page" content="signup" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up | Marquezcents Co.</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+
+  <header>
+    <div class="brand">
+      <img src="images/logo3.png" alt="Logo" />
+      <div>
+        <h1>{{ companyName }}</h1>
+        <p>{{ tagline }}</p>
+      </div>
+    </div>
+    <div class="header-actions"><div class="pill">Create your account</div></div>
+  </header>
+
+  <div class="container">
+    <nav>
+      <ul>
+        <li v-for="link in navLinks" :key="link.text">
+          <a v-if="!link.action" class="nav-link" :href="link.href" :class="{ active: link.page === page }">
+            <span>{{ link.text }}</span>
+            <span v-if="link.badge !== undefined" class="badge">{{ link.badge }}</span>
+          </a>
+          <button v-else class="nav-link" type="button" @click="handleNav(link)">
+            <span>{{ link.text }}</span>
+          </button>
+        </li>
+      </ul>
+    </nav>
+
+    <main>
+      <h2>Sign Up</h2>
+      <div class="alert err" v-if="error">{{ error }}</div>
+
+      <div class="card">
+        <form @submit.prevent="signup">
+          <label>Name</label>
+          <input type="text" v-model="signupForm.name" required placeholder="Your name" />
+
+          <label>Email</label>
+          <input type="email" v-model="signupForm.email" required placeholder="you@email.com" />
+
+          <label>Password</label>
+          <input type="password" v-model="signupForm.password" required placeholder="min 6 characters" />
+
+          <label>Confirm Password</label>
+          <input type="password" v-model="signupForm.confirm" required placeholder="repeat password" />
+
+          <div class="btn-row">
+            <button class="btn" type="submit">Create Account</button>
+            <a class="btn secondary" href="login.html">Back to Login</a>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <footer><p>&copy; {{ year }} | {{ companyName }}</p></footer>
+
+</div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
